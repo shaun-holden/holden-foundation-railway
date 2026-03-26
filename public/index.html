@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Holden Foundation for Kids Sports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy:   #0a0e2a;
+  --deep:   #060918;
+  --gold:   #f5c842;
+  --orange: #f97316;
+  --sky:    #38bdf8;
+  --white:  #f8fafc;
+  --muted:  #94a3b8;
+  --card:   #111630;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--deep);
+  color: var(--white);
+  font-family: 'Barlow', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; width: 100%; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 2rem;
+  background: rgba(6,9,24,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(245,200,66,0.15);
+}
+.nav-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+}
+.nav-logo span { color: var(--sky); }
+nav ul { list-style: none; display: flex; gap: 1.8rem; }
+nav ul a {
+  text-decoration: none; color: var(--muted);
+  font-weight: 600; font-size: .85rem; letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: color .2s;
+}
+nav ul a:hover { color: var(--gold); }
+.nav-cta {
+  background: var(--gold); color: var(--navy) !important;
+  padding: .4rem 1.1rem; border-radius: 4px;
+}
+.nav-cta:hover { background: var(--orange); color: var(--white) !important; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: 8rem 2rem 4rem;
+  position: relative; overflow: hidden;
+}
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(56,189,248,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 50% at 20% 80%, rgba(245,200,66,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 85% 85%, rgba(249,115,22,0.06) 0%, transparent 60%);
+}
+.hero-grid {
+  position: absolute; inset: 0; z-index: 0; opacity: .04;
+  background-image:
+    linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.6) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+.hero-content { position: relative; z-index: 1; max-width: 800px; }
+.hero-eyebrow {
+  font-size: .8rem; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--sky); font-weight: 700;
+  display: inline-flex; align-items: center; gap: .6rem;
+  margin-bottom: 1.2rem;
+  opacity: 0; animation: fadeUp .6s .2s forwards;
+}
+.hero-eyebrow::before {
+  content: ''; width: 32px; height: 2px; background: var(--sky);
+}
+h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(3.5rem, 10vw, 7rem);
+  line-height: .95;
+  letter-spacing: 2px;
+  opacity: 0; animation: fadeUp .7s .35s forwards;
+}
+h1 .accent { color: var(--gold); display: block; }
+h1 .accent2 { color: var(--orange); }
+.hero-sub {
+  margin-top: 1.4rem;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+  color: var(--muted); line-height: 1.7; max-width: 540px;
+  opacity: 0; animation: fadeUp .7s .5s forwards;
+}
+.hero-actions {
+  margin-top: 2.4rem; display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .7s .65s forwards;
+}
+.btn-primary {
+  background: var(--gold); color: var(--navy);
+  padding: .85rem 2rem; border-radius: 6px;
+  font-weight: 700; font-size: .95rem; letter-spacing: .5px;
+  text-decoration: none; text-transform: uppercase;
+  transition: transform .2s, background .2s;
+}
+.btn-primary:hover { background: var(--orange); color: var(--white); transform: translateY(-2px); }
+.btn-outline {
+  border: 2px solid rgba(248,250,252,.2); color: var(--white);
+  padding: .85rem 2rem; border-radius: 6px;
+  font-weight: 700; font-size: .95rem; letter-spacing: .5px;
+  text-decoration: none; text-transform: uppercase;
+  transition: border-color .2s, transform .2s;
+}
+.btn-outline:hover { border-color: var(--sky); color: var(--sky); transform: translateY(-2px); }
+
+.hero-stats {
+  margin-top: 4rem; display: flex; gap: 2.5rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp .7s .8s forwards;
+}
+.stat-item { text-align: left; }
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.8rem; letter-spacing: 1px; line-height: 1;
+  color: var(--gold);
+}
+.stat-label { font-size: .78rem; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); margin-top: .2rem; }
+
+/* ── MISSION STRIP ── */
+.mission-strip {
+  background: var(--gold);
+  padding: 1rem 2rem;
+  overflow: hidden;
+}
+.ticker {
+  display: flex; gap: 3rem; white-space: nowrap;
+  animation: ticker 20s linear infinite;
+}
+.ticker span {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem; letter-spacing: 3px;
+  color: var(--navy);
+}
+.ticker span::before { content: '★  '; }
+
+/* ── SECTION BASE ── */
+section { padding: 5rem 2rem; }
+.section-label {
+  font-size: .75rem; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--sky); font-weight: 700;
+  display: flex; align-items: center; gap: .6rem; margin-bottom: .8rem;
+}
+.section-label::before { content: ''; width: 28px; height: 2px; background: var(--sky); }
+h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  letter-spacing: 2px; line-height: 1; margin-bottom: 1rem;
+}
+h2 em { color: var(--gold); font-style: normal; }
+
+/* ── MISSIONS ── */
+.missions { background: var(--navy); }
+.missions-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem; margin-top: 3rem;
+}
+.mission-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px; padding: 2rem;
+  position: relative; overflow: hidden;
+  transition: transform .3s, border-color .3s;
+}
+.mission-card:hover { transform: translateY(-6px); border-color: var(--gold); }
+.mission-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.mission-card:nth-child(1)::before { background: var(--gold); }
+.mission-card:nth-child(2)::before { background: var(--sky); }
+.mission-card:nth-child(3)::before { background: var(--orange); }
+.mission-card:nth-child(4)::before { background: linear-gradient(90deg, var(--gold), var(--orange)); }
+.mission-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+.mission-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem; letter-spacing: 1px; margin-bottom: .6rem;
+}
+.mission-card p { color: var(--muted); font-size: .95rem; line-height: 1.7; }
+
+/* ── IMPACT ── */
+.impact { background: var(--deep); }
+.impact-inner {
+  max-width: 900px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  margin-top: 3rem;
+}
+.impact-big {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, var(--navy), #0d1440);
+  border: 1px solid rgba(245,200,66,.2);
+  border-radius: 16px; padding: 3rem;
+  display: flex; align-items: center; gap: 3rem; flex-wrap: wrap;
+}
+.impact-quote {
+  flex: 1; min-width: 200px;
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  line-height: 1.7; color: var(--white);
+}
+.impact-quote strong { color: var(--gold); }
+.impact-num-block { text-align: center; }
+.impact-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 5rem; color: var(--gold); line-height: 1;
+}
+.impact-num-label { color: var(--muted); font-size: .85rem; letter-spacing: 2px; text-transform: uppercase; }
+.impact-card {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 12px; padding: 2rem;
+}
+.impact-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 3.5rem; color: var(--sky); line-height: 1;
+}
+.impact-card h3 span { font-size: 1.5rem; color: var(--orange); }
+.impact-card p { color: var(--muted); font-size: .9rem; margin-top: .4rem; line-height: 1.6; }
+
+/* ── PROGRAMS ── */
+.programs { background: var(--navy); }
+.programs-list { margin-top: 3rem; display: flex; flex-direction: column; gap: 1rem; }
+.program-row {
+  display: flex; align-items: center; gap: 1.5rem;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.06);
+  border-radius: 10px; padding: 1.4rem 2rem;
+  transition: border-color .3s, transform .2s;
+  cursor: default;
+}
+.program-row:hover { border-color: var(--sky); transform: translateX(6px); }
+.program-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2.5rem; color: rgba(245,200,66,.18);
+  min-width: 50px; line-height: 1;
+}
+.program-info h4 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.4rem; letter-spacing: 1px;
+}
+.program-info p { color: var(--muted); font-size: .88rem; margin-top: .2rem; }
+.program-tag {
+  margin-left: auto; padding: .3rem .8rem;
+  border-radius: 20px; font-size: .72rem; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase; white-space: nowrap;
+}
+.tag-active { background: rgba(56,189,248,.15); color: var(--sky); }
+.tag-new { background: rgba(249,115,22,.15); color: var(--orange); }
+.tag-open { background: rgba(245,200,66,.15); color: var(--gold); }
+
+/* ── GET INVOLVED ── */
+.involved { background: var(--deep); }
+.involved-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.5rem; margin-top: 3rem;
+}
+.involved-card {
+  border-radius: 12px; padding: 2.2rem;
+  display: flex; flex-direction: column; gap: 1rem;
+  transition: transform .3s;
+}
+.involved-card:hover { transform: translateY(-5px); }
+.involved-card:nth-child(1) { background: linear-gradient(135deg, #1a2a0a, #243812); border: 1px solid rgba(132,204,22,.2); }
+.involved-card:nth-child(2) { background: linear-gradient(135deg, #1a100a, #2e1a0a); border: 1px solid rgba(249,115,22,.2); }
+.involved-card:nth-child(3) { background: linear-gradient(135deg, #0a1a2a, #0a1e38); border: 1px solid rgba(56,189,248,.2); }
+.involved-icon { font-size: 2.5rem; }
+.involved-card h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.6rem; letter-spacing: 1px;
+}
+.involved-card p { color: var(--muted); font-size: .9rem; line-height: 1.6; flex: 1; }
+.involved-link {
+  display: inline-flex; align-items: center; gap: .4rem;
+  color: var(--gold); font-weight: 700; font-size: .85rem;
+  text-transform: uppercase; letter-spacing: 1px;
+  text-decoration: none;
+}
+.involved-link:hover { color: var(--orange); }
+
+/* ── DONATE BANNER ── */
+.donate-banner {
+  background: linear-gradient(135deg, #f5c842 0%, #f97316 100%);
+  padding: 4rem 2rem; text-align: center; position: relative; overflow: hidden;
+}
+.donate-banner::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.donate-banner h2 {
+  color: var(--navy); font-size: clamp(2.5rem, 6vw, 4.5rem);
+  position: relative; z-index: 1;
+}
+.donate-banner p {
+  color: rgba(10,14,42,.7); font-size: 1.1rem;
+  max-width: 500px; margin: .8rem auto 0;
+  position: relative; z-index: 1;
+}
+.donate-buttons {
+  display: flex; flex-wrap: wrap; gap: 1rem;
+  justify-content: center; margin-top: 2rem;
+  position: relative; z-index: 1;
+}
+.btn-dark {
+  background: var(--navy); color: var(--gold);
+  padding: 1rem 2rem; border-radius: 6px;
+  font-weight: 700; font-size: 1rem; letter-spacing: 1px;
+  text-decoration: none; text-transform: uppercase;
+  display: inline-block; min-width: 130px; text-align: center;
+  transition: transform .2s, background .2s;
+}
+.btn-dark:hover { background: var(--deep); transform: translateY(-3px); }
+.btn-dark-white {
+  background: #ffffff; color: var(--navy);
+  padding: 1rem 2rem; border-radius: 6px;
+  font-weight: 700; font-size: 1rem; letter-spacing: 1px;
+  text-decoration: none; text-transform: uppercase;
+  display: inline-block; min-width: 150px; text-align: center;
+  transition: transform .2s;
+}
+.btn-dark-white:hover { transform: translateY(-3px); }
+.donate-secure {
+  margin-top: 1rem; font-size: .8rem;
+  color: rgba(10,14,42,.55);
+  position: relative; z-index: 1;
+}
+
+/* ── CONTACT ── */
+.contact { background: var(--navy); }
+.contact-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 4rem; margin-top: 3rem; align-items: start;
+}
+.contact-info p { color: var(--muted); line-height: 1.8; margin-bottom: 2rem; }
+.contact-detail {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 1rem;
+}
+.contact-detail-icon {
+  width: 38px; height: 38px; border-radius: 8px;
+  background: var(--card); display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; flex-shrink: 0;
+}
+.contact-detail span { color: var(--muted); font-size: .9rem; }
+.contact-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.form-group { display: flex; flex-direction: column; gap: .4rem; }
+.form-group label { font-size: .75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); font-weight: 600; }
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 6px; padding: .75rem 1rem;
+  color: var(--white); font-family: 'Barlow', sans-serif;
+  font-size: .95rem;
+  transition: border-color .2s;
+  outline: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus { border-color: var(--gold); }
+.form-group textarea { resize: vertical; min-height: 120px; }
+.form-group select option { background: var(--card); }
+.btn-submit {
+  background: var(--gold); color: var(--navy);
+  padding: .9rem 2rem; border-radius: 6px;
+  font-weight: 700; font-size: .95rem; letter-spacing: .5px;
+  text-transform: uppercase; border: none; cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.btn-submit:hover { background: var(--orange); color: var(--white); transform: translateY(-2px); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--deep);
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 3rem 2rem;
+  display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.8rem; letter-spacing: 3px; color: var(--gold);
+}
+.footer-logo span { color: var(--sky); }
+footer p { color: var(--muted); font-size: .85rem; }
+.footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+.footer-links a { color: var(--muted); text-decoration: none; font-size: .85rem; transition: color .2s; }
+.footer-links a:hover { color: var(--gold); }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 700px) {
+  nav ul { display: none; }
+  .contact-inner { grid-template-columns: 1fr; }
+  .impact-inner { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .impact-big { flex-direction: column; gap: 1.5rem; }
+  .hero-stats { gap: 1.5rem; }
+}
+
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+
+<nav>
+  <div class="nav-logo">HFKS <span>Foundation</span></div>
+  <ul>
+    <li><a href="#missions">Mission</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#impact">Impact</a></li>
+    <li><a href="#involved">Get Involved</a></li>
+    <li><a href="#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Empowering the Next Generation</div>
+    <h1>
+      Holden Foundation
+      <span class="accent">for Kids <span class="accent2">Sports</span></span>
+    </h1>
+    <p class="hero-sub">
+      Giving every child the opportunity to discover their potential through athletics — regardless of background, zip code, or circumstance.
+    </p>
+    <div class="hero-actions">
+      <a href="#involved" class="btn-primary">Get Involved</a>
+      <a href="#missions" class="btn-outline">Our Mission</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">500+</div>
+        <div class="stat-label">Kids Served</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">12</div>
+        <div class="stat-label">Programs</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">8</div>
+        <div class="stat-label">Years Strong</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+
+<div class="mission-strip">
+  <div class="ticker">
+    <span>Youth Athletics</span>
+    <span>Scholarships</span>
+    <span>Community Outreach</span>
+    <span>Skill Development</span>
+    <span>Character Building</span>
+    <span>Equal Access</span>
+    <span>Youth Athletics</span>
+    <span>Scholarships</span>
+    <span>Community Outreach</span>
+    <span>Skill Development</span>
+    <span>Character Building</span>
+    <span>Equal Access</span>
+  </div>
+</div>
+
+<!-- MISSIONS -->
+
+<section class="missions" id="missions">
+  <div class="section-label">What We Stand For</div>
+  <h2>Our <em>Core Missions</em></h2>
+  <div class="missions-grid">
+    <div class="mission-card">
+      <div class="mission-icon">🏅</div>
+      <h3>Youth Athletics</h3>
+      <p>Providing structured sports programs that build physical fitness, discipline, and teamwork for kids of all ages and skill levels.</p>
+    </div>
+    <div class="mission-card">
+      <div class="mission-icon">🎓</div>
+      <h3>Scholarships & Education</h3>
+      <p>Funding athletic and academic scholarships so financial barriers never stand between a child and their dreams.</p>
+    </div>
+    <div class="mission-card">
+      <div class="mission-icon">🤝</div>
+      <h3>Community Outreach</h3>
+      <p>Partnering with schools, clubs, and local organizations to bring sports access to underserved communities across the region.</p>
+    </div>
+    <div class="mission-card">
+      <div class="mission-icon">🌟</div>
+      <h3>Character Development</h3>
+      <p>Using sports as a vehicle to teach resilience, leadership, and confidence — skills that last far beyond the playing field.</p>
+    </div>
+  </div>
+</section>
+
+<!-- IMPACT -->
+
+<section class="impact" id="impact">
+  <div class="section-label">By the Numbers</div>
+  <h2>Real <em>Impact</em></h2>
+  <div class="impact-inner">
+    <div class="impact-big">
+      <div class="impact-quote">
+        <strong>Every child deserves a chance to compete, grow, and thrive.</strong> Sport is one of the most powerful tools we have — and we're making sure every kid gets access to it.
+      </div>
+      <div class="impact-num-block">
+        <div class="impact-num">93%</div>
+        <div class="impact-num-label">of participants improve grades</div>
+      </div>
+    </div>
+    <div class="impact-card">
+      <h3>500<span>+</span></h3>
+      <p>Children have participated in our programs since founding</p>
+    </div>
+    <div class="impact-card">
+      <h3>$250<span>K+</span></h3>
+      <p>In scholarships and financial aid awarded to deserving athletes</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS -->
+
+<section class="programs" id="programs">
+  <div class="section-label">What We Offer</div>
+  <h2>Our <em>Programs</em></h2>
+  <div class="programs-list">
+    <div class="program-row">
+      <div class="program-num">01</div>
+      <div class="program-info">
+        <h4>Junior Athletics Academy</h4>
+        <p>Multi-sport development for ages 6–12 focusing on fundamentals and fun</p>
+      </div>
+      <span class="program-tag tag-active">Active</span>
+    </div>
+    <div class="program-row">
+      <div class="program-num">02</div>
+      <div class="program-info">
+        <h4>Competitive Track & Gymnastics</h4>
+        <p>Elite-level training pathways for athletes ages 10–18</p>
+      </div>
+      <span class="program-tag tag-active">Active</span>
+    </div>
+    <div class="program-row">
+      <div class="program-num">03</div>
+      <div class="program-info">
+        <h4>Scholarship Program</h4>
+        <p>Annual scholarships for student-athletes demonstrating excellence on and off the field</p>
+      </div>
+      <span class="program-tag tag-open">Accepting Apps</span>
+    </div>
+    <div class="program-row">
+      <div class="program-num">04</div>
+      <div class="program-info">
+        <h4>Community Clinics</h4>
+        <p>Free weekend clinics bringing professional coaching to underserved neighborhoods</p>
+      </div>
+      <span class="program-tag tag-new">New</span>
+    </div>
+    <div class="program-row">
+      <div class="program-num">05</div>
+      <div class="program-info">
+        <h4>Mentorship & Leadership</h4>
+        <p>Pairing youth athletes with coaches and mentors for life skills development</p>
+      </div>
+      <span class="program-tag tag-active">Active</span>
+    </div>
+  </div>
+</section>
+
+<!-- GET INVOLVED -->
+
+<section class="involved" id="involved">
+  <div class="section-label">Join the Movement</div>
+  <h2>Get <em>Involved</em></h2>
+  <div class="involved-grid">
+    <div class="involved-card">
+      <div class="involved-icon">💛</div>
+      <h3>Donate</h3>
+      <p>Your contribution directly funds scholarships, equipment, and free programming for kids who need it most.</p>
+      <a href="https://buy.stripe.com/7sY6oGdmJdOg3YNfAJ9AA04" target="_blank" class="involved-link">Give Now →</a>
+    </div>
+    <div class="involved-card">
+      <div class="involved-icon">🙌</div>
+      <h3>Volunteer</h3>
+      <p>Share your time and skills. We need coaches, mentors, event staff, and administrative supporters.</p>
+      <a href="#contact" class="involved-link">Sign Up →</a>
+    </div>
+    <div class="involved-card">
+      <div class="involved-icon">🏢</div>
+      <h3>Partner With Us</h3>
+      <p>Businesses and organizations can sponsor programs, events, and scholarships to make a lasting community impact.</p>
+      <a href="#contact" class="involved-link">Learn More →</a>
+    </div>
+  </div>
+</section>
+
+<!-- DONATE SECTION -->
+
+<div class="donate-banner" id="donate">
+  <h2>Change a Child's Life Today</h2>
+  <p>Every dollar goes directly toward giving kids access to the sports and mentorship they deserve.</p>
+  <div class="donate-buttons">
+    <a href="https://buy.stripe.com/14A4gybeB4dG66VdsB9AA02" target="_blank" class="btn-dark">💛 Give $25</a>
+    <a href="https://buy.stripe.com/dRm8wO1E1aC48f32NX9AA03" target="_blank" class="btn-dark">🌟 Give $50</a>
+    <a href="https://buy.stripe.com/fZu8wO2I58tW66V2NX9AA01" target="_blank" class="btn-dark">🏅 Give $100</a>
+    <a href="https://buy.stripe.com/7sY6oGdmJdOg3YNfAJ9AA04" target="_blank" class="btn-dark-white">✏️ Custom Amount</a>
+  </div>
+  <p class="donate-secure">🔒 Secure payments powered by Stripe</p>
+</div>
+
+<!-- CONTACT -->
+
+<section class="contact" id="contact">
+  <div class="section-label">Reach Out</div>
+  <h2>Let's <em>Connect</em></h2>
+  <div class="contact-inner">
+    <div class="contact-info">
+      <p>Whether you want to donate, volunteer, partner, or simply learn more — we'd love to hear from you. Every conversation matters.</p>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📍</div>
+        <span>Peachtree Corners, GA</span>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">✉️</div>
+        <span>info@holdenfoundation.org</span>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📞</div>
+        <span>(470) 000-0000</span>
+      </div>
+    </div>
+    <div class="contact-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="First"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Last"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>I want to...</label>
+        <select>
+          <option>Donate</option>
+          <option>Volunteer</option>
+          <option>Partner / Sponsor</option>
+          <option>Enroll my child</option>
+          <option>Learn more</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us how you'd like to get involved..."></textarea>
+      </div>
+      <button class="btn-submit">Send Message</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+  <div class="footer-logo">Holden Foundation <span>for Kids Sports</span></div>
+  <div class="footer-links">
+    <a href="#missions">Mission</a>
+    <a href="#programs">Programs</a>
+    <a href="#impact">Impact</a>
+    <a href="#involved">Get Involved</a>
+    <a href="#donate">Donate</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <p>© 2026 Holden Foundation for Kids Sports. All rights reserved. | 501(c)(3) Nonprofit</p>
+</footer>
+
+</body>
+</html>
