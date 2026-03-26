@@ -717,5 +717,50 @@ footer p { color: var(--muted); font-size: .85rem; }
   <p>© 2026 Holden Foundation for Kids Sports. All rights reserved. | 501(c)(3) Nonprofit</p>
 </footer>
 
+<script>
+document.querySelector(".btn-submit").addEventListener("click", async (e) => {
+  e.preventDefault();
+  const form = document.querySelector(".contact-form");
+  const inputs = form.querySelectorAll("input, select, textarea");
+  const btn = e.target;
+
+  const data = {
+    firstName: inputs[0].value.trim(),
+    lastName: inputs[1].value.trim(),
+    email: inputs[2].value.trim(),
+    interest: inputs[3].value,
+    message: inputs[4].value.trim(),
+  };
+
+  if (!data.firstName || !data.email || !data.message) {
+    alert("Please fill in your name, email, and message.");
+    return;
+  }
+
+  btn.textContent = "Sending...";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch("/api/contact", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    if (res.ok) {
+      alert("Message sent! We'll be in touch soon.");
+      inputs.forEach((i) => (i.value = ""));
+    } else {
+      alert("Something went wrong. Please try again.");
+    }
+  } catch {
+    alert("Network error. Please try again.");
+  }
+
+  btn.textContent = "Send Message";
+  btn.disabled = false;
+});
+</script>
+
 </body>
 </html>
