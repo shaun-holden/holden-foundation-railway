@@ -18,7 +18,7 @@ app.post("/api/contact", async (req, res) => {
 
   try {
     await resend.emails.send({
-      from: "Holden Foundation <onboarding@resend.dev>",
+      from: "Holden Foundation <noreply@holdenfoundationforkidssports.com>",
       to: "holdensportsforkids@gmail.com",
       subject: `New Contact: ${firstName} ${lastName} — ${interest}`,
       html: `
