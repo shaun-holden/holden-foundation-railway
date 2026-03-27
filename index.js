@@ -2,8 +2,10 @@ const express = require("express");
 const path = require("path");
 const { Resend } = require("resend");
 const Stripe = require("stripe");
+const multer = require("multer");
 
 const app = express();
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
 const PORT = process.env.PORT || 3000;
 const resend = new Resend(process.env.RESEND_API_KEY);
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -136,6 +138,135 @@ app.post("/api/contact", async (req, res) => {
   } catch (err) {
     console.error("Resend error:", err);
     res.status(500).json({ error: "Failed to send message" });
+  }
+});
+
+const scholarshipUpload = upload.fields([
+  { name: "reportCard", maxCount: 1 },
+  { name: "coachLetter", maxCount: 1 },
+  { name: "proofOfIncome", maxCount: 1 },
+]);
+
+app.post("/api/scholarship", scholarshipUpload, async (req, res) => {
+  const d = req.body;
+
+  if (!d.parentFirstName || !d.parentEmail || !d.childFirstName || !d.whyImportant) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+
+  const attachments = [];
+  for (const field of ["reportCard", "coachLetter", "proofOfIncome"]) {
+    if (req.files && req.files[field] && req.files[field][0]) {
+      const file = req.files[field][0];
+      attachments.push({
+        filename: file.originalname,
+        content: file.buffer,
+      });
+    }
+  }
+
+  const date = new Date().toLocaleDateString("en-US", {
+    year: "numeric", month: "long", day: "numeric",
+  });
+
+  try {
+    // Send application to foundation
+    await resend.emails.send({
+      from: "Holden Foundation <noreply@holdenfoundationforkidssports.com>",
+      to: "holdensportsforkids@gmail.com",
+      subject: `Scholarship Application: ${d.childFirstName} ${d.childLastName}`,
+      attachments,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 700px;">
+          <h1 style="color: #f5c842;">New Scholarship Application</h1>
+          <p style="color: #666;">Received on ${date}</p>
+
+          <h2 style="color: #38bdf8; border-bottom: 1px solid #ddd; padding-bottom: 8px;">Parent / Guardian</h2>
+          <p><strong>Name:</strong> ${d.parentFirstName} ${d.parentLastName}</p>
+          <p><strong>Email:</strong> ${d.parentEmail}</p>
+          <p><strong>Phone:</strong> ${d.parentPhone || "N/A"}</p>
+          <p><strong>Relationship:</strong> ${d.relationship || "N/A"}</p>
+          <p><strong>Address:</strong> ${d.street || ""}, ${d.city || ""}, ${d.state || ""} ${d.zip || ""}</p>
+
+          <h2 style="color: #38bdf8; border-bottom: 1px solid #ddd; padding-bottom: 8px;">Child / Athlete</h2>
+          <p><strong>Name:</strong> ${d.childFirstName} ${d.childLastName}</p>
+          <p><strong>Date of Birth:</strong> ${d.dob || "N/A"}</p>
+          <p><strong>Age:</strong> ${d.age || "N/A"}</p>
+          <p><strong>Gender:</strong> ${d.gender || "N/A"}</p>
+          <p><strong>School:</strong> ${d.school || "N/A"}</p>
+          <p><strong>Grade:</strong> ${d.gradeLevel || "N/A"}</p>
+          <p><strong>Sport(s):</strong> ${d.sports || "N/A"}</p>
+
+          <h2 style="color: #38bdf8; border-bottom: 1px solid #ddd; padding-bottom: 8px;">Financial Need</h2>
+          <p><strong>Household Income:</strong> ${d.incomeRange || "N/A"}</p>
+          <p><strong>Household Members:</strong> ${d.householdMembers || "N/A"}</p>
+          <p><strong>Currently in Sports:</strong> ${d.currentlyInSports || "N/A"}</p>
+          <p><strong>Current Program:</strong> ${d.currentProgram || "N/A"}</p>
+          <p><strong>Previous Scholarship:</strong> ${d.previousScholarship || "N/A"}</p>
+
+          <h2 style="color: #38bdf8; border-bottom: 1px solid #ddd; padding-bottom: 8px;">Personal Statement</h2>
+          <p><strong>Why this scholarship is important:</strong></p>
+          <p style="background: #f5f5f5; padding: 12px; border-radius: 6px;">${d.whyImportant}</p>
+          <p><strong>Athletic experience & goals:</strong></p>
+          <p style="background: #f5f5f5; padding: 12px; border-radius: 6px;">${d.athleticExperience || "N/A"}</p>
+          <p><strong>Additional info:</strong></p>
+          <p style="background: #f5f5f5; padding: 12px; border-radius: 6px;">${d.additionalInfo || "N/A"}</p>
+
+          <p style="margin-top: 20px; color: #666; font-size: 13px;">
+            ${attachments.length} document(s) attached.
+          </p>
+        </div>
+      `,
+    });
+
+    // Send confirmation to parent
+    await resend.emails.send({
+      from: "Holden Foundation <noreply@holdenfoundationforkidssports.com>",
+      to: d.parentEmail,
+      subject: "Scholarship Application Received — Holden Foundation",
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #060918; color: #f8fafc; padding: 40px; border-radius: 12px;">
+          <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="font-size: 28px; color: #f5c842; margin: 0;">Holden Foundation for Kids Sports</h1>
+            <p style="color: #94a3b8; font-size: 14px; margin-top: 5px;">Scholarship Program</p>
+          </div>
+
+          <div style="background: #0a0e2a; border: 1px solid rgba(56,189,248,0.2); border-radius: 10px; padding: 25px; margin-bottom: 25px;">
+            <p style="color: #f8fafc; line-height: 1.8; margin: 0;">
+              Dear ${d.parentFirstName},
+            </p>
+            <p style="color: #94a3b8; line-height: 1.8;">
+              Thank you for submitting a scholarship application for <strong style="color: #f8fafc;">${d.childFirstName} ${d.childLastName}</strong>. We have received your application and all supporting documents.
+            </p>
+            <p style="color: #94a3b8; line-height: 1.8;">
+              Our team will review your application carefully. Please allow 2–4 weeks for processing. If we need any additional information, we will reach out to you at this email address.
+            </p>
+          </div>
+
+          <div style="background: #0a0e2a; border: 1px solid rgba(245,200,66,0.2); border-radius: 10px; padding: 20px; margin-bottom: 25px;">
+            <h3 style="color: #f5c842; margin-top: 0; font-size: 16px;">Application Summary</h3>
+            <p style="color: #94a3b8; line-height: 1.8; margin: 0;">
+              <strong style="color: #f8fafc;">Applicant:</strong> ${d.childFirstName} ${d.childLastName}<br/>
+              <strong style="color: #f8fafc;">Sport(s):</strong> ${d.sports || "N/A"}<br/>
+              <strong style="color: #f8fafc;">Date Submitted:</strong> ${date}
+            </p>
+          </div>
+
+          <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; text-align: center;">
+            <p style="color: #94a3b8; font-size: 13px; line-height: 1.6;">
+              <strong style="color: #f5c842;">Holden Foundation for Kids Sports</strong><br/>
+              Peachtree Corners, GA<br/>
+              EIN: 88-2344143
+            </p>
+          </div>
+        </div>
+      `,
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Scholarship submission error:", err);
+    res.status(500).json({ error: "Failed to submit application. Please try again." });
   }
 });
 

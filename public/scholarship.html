@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Scholarship Application — Holden Foundation for Kids Sports</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0a0e2a;
+      --deep:   #060918;
+      --gold:   #f5c842;
+      --orange: #f97316;
+      --sky:    #38bdf8;
+      --white:  #f8fafc;
+      --muted:  #94a3b8;
+      --card:   #111630;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--deep);
+      color: var(--white);
+      font-family: 'Barlow', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 2rem;
+      background: rgba(6,9,24,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(245,200,66,0.15);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 2px; color: var(--gold);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--sky); }
+    nav ul { list-style: none; display: flex; gap: 1.8rem; }
+    nav ul a {
+      text-decoration: none; color: var(--muted);
+      font-weight: 600; font-size: .85rem; letter-spacing: 1px;
+      text-transform: uppercase; transition: color .2s;
+    }
+    nav ul a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: var(--navy) !important;
+      padding: .4rem 1.1rem; border-radius: 4px;
+    }
+    .nav-cta:hover { background: var(--orange); color: var(--white) !important; }
+
+    /* PAGE HEADER */
+    .page-header {
+      padding: 8rem 2rem 3rem;
+      text-align: center;
+    }
+    .section-label {
+      font-size: .75rem; letter-spacing: 4px; text-transform: uppercase;
+      color: var(--sky); font-weight: 700;
+      display: inline-flex; align-items: center; gap: .6rem; margin-bottom: .8rem;
+    }
+    .section-label::before { content: ''; width: 28px; height: 2px; background: var(--sky); }
+    h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 6vw, 4rem);
+      letter-spacing: 2px; line-height: 1; margin-bottom: 1rem;
+    }
+    h1 em { color: var(--gold); font-style: normal; }
+    .page-header p {
+      color: var(--muted); font-size: 1.05rem; max-width: 600px;
+      margin: 0 auto; line-height: 1.7;
+    }
+
+    /* FORM CONTAINER */
+    .form-container {
+      max-width: 800px; margin: 0 auto;
+      padding: 0 2rem 5rem;
+    }
+
+    .form-section {
+      background: var(--card);
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 12px; padding: 2rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem; letter-spacing: 1px;
+      margin-bottom: 1.5rem; color: var(--gold);
+    }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: .4rem; margin-bottom: 1rem; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-group label {
+      font-size: .75rem; text-transform: uppercase; letter-spacing: 1px;
+      color: var(--muted); font-weight: 600;
+    }
+    .form-group label .required { color: var(--orange); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      background: var(--navy);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 6px; padding: .75rem 1rem;
+      color: var(--white); font-family: 'Barlow', sans-serif;
+      font-size: .95rem; transition: border-color .2s; outline: none;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--gold); }
+    .form-group textarea { resize: vertical; min-height: 120px; }
+    .form-group select option { background: var(--navy); }
+
+    .form-group input[type="file"] {
+      padding: .5rem;
+      font-size: .85rem;
+    }
+    .form-group input[type="file"]::file-selector-button {
+      background: var(--navy); color: var(--gold);
+      border: 1px solid rgba(245,200,66,.3);
+      border-radius: 4px; padding: .4rem .8rem;
+      font-family: 'Barlow', sans-serif; font-weight: 600;
+      font-size: .8rem; cursor: pointer;
+      margin-right: .8rem;
+    }
+
+    .checkbox-group {
+      display: flex; align-items: flex-start; gap: .8rem;
+      margin-bottom: .8rem;
+    }
+    .checkbox-group input[type="checkbox"] {
+      accent-color: var(--gold); margin-top: 3px;
+      width: 16px; height: 16px; flex-shrink: 0;
+    }
+    .checkbox-group label {
+      font-size: .9rem; color: var(--muted);
+      text-transform: none; letter-spacing: 0; font-weight: 400;
+      line-height: 1.5;
+    }
+
+    .file-note {
+      font-size: .78rem; color: var(--muted); margin-top: .2rem;
+    }
+
+    .btn-submit {
+      background: var(--gold); color: var(--navy);
+      padding: 1rem 2.5rem; border-radius: 6px;
+      font-weight: 700; font-size: 1rem; letter-spacing: .5px;
+      text-transform: uppercase; border: none; cursor: pointer;
+      transition: background .2s, transform .2s;
+      width: 100%;
+    }
+    .btn-submit:hover { background: var(--orange); color: var(--white); transform: translateY(-2px); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+    /* FOOTER */
+    footer {
+      background: var(--deep);
+      border-top: 1px solid rgba(255,255,255,.06);
+      padding: 3rem 2rem;
+      display: flex; flex-direction: column; align-items: center; gap: 1.2rem;
+      text-align: center;
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem; letter-spacing: 3px; color: var(--gold);
+    }
+    .footer-logo span { color: var(--sky); }
+    footer p { color: var(--muted); font-size: .85rem; }
+    .footer-links { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+    .footer-links a { color: var(--muted); text-decoration: none; font-size: .85rem; transition: color .2s; }
+    .footer-links a:hover { color: var(--gold); }
+
+    @media (max-width: 700px) {
+      nav ul { display: none; }
+      .form-row, .form-row-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">HFKS <span>Foundation</span></a>
+  <ul>
+    <li><a href="/#missions">Mission</a></li>
+    <li><a href="/#programs">Programs</a></li>
+    <li><a href="/#impact">Impact</a></li>
+    <li><a href="/#involved">Get Involved</a></li>
+    <li><a href="/#contact" class="nav-cta">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="section-label">Apply Now</div>
+  <h1>Scholarship <em>Application</em></h1>
+  <p>The Holden Foundation is committed to removing financial barriers so every child can participate in sports. Complete the form below to apply for scholarship assistance.</p>
+</div>
+
+<!-- FORM -->
+<div class="form-container">
+  <form id="scholarshipForm" enctype="multipart/form-data">
+
+    <!-- Section 1: Parent/Guardian -->
+    <div class="form-section">
+      <h2>Parent / Guardian Information</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name <span class="required">*</span></label>
+          <input type="text" name="parentFirstName" required />
+        </div>
+        <div class="form-group">
+          <label>Last Name <span class="required">*</span></label>
+          <input type="text" name="parentLastName" required />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Email <span class="required">*</span></label>
+          <input type="email" name="parentEmail" required />
+        </div>
+        <div class="form-group">
+          <label>Phone Number <span class="required">*</span></label>
+          <input type="tel" name="parentPhone" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Relationship to Child <span class="required">*</span></label>
+        <select name="relationship" required>
+          <option value="">Select...</option>
+          <option>Parent</option>
+          <option>Legal Guardian</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Street Address <span class="required">*</span></label>
+        <input type="text" name="street" required />
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>City <span class="required">*</span></label>
+          <input type="text" name="city" required />
+        </div>
+        <div class="form-group">
+          <label>State <span class="required">*</span></label>
+          <input type="text" name="state" required />
+        </div>
+        <div class="form-group">
+          <label>Zip Code <span class="required">*</span></label>
+          <input type="text" name="zip" required />
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 2: Child/Athlete -->
+    <div class="form-section">
+      <h2>Child / Athlete Information</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Child's First Name <span class="required">*</span></label>
+          <input type="text" name="childFirstName" required />
+        </div>
+        <div class="form-group">
+          <label>Child's Last Name <span class="required">*</span></label>
+          <input type="text" name="childLastName" required />
+        </div>
+      </div>
+      <div class="form-row-3">
+        <div class="form-group">
+          <label>Date of Birth <span class="required">*</span></label>
+          <input type="date" name="dob" required />
+        </div>
+        <div class="form-group">
+          <label>Age <span class="required">*</span></label>
+          <input type="number" name="age" min="3" max="18" required />
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select name="gender">
+            <option value="">Select...</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Non-binary</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Current School <span class="required">*</span></label>
+          <input type="text" name="school" required />
+        </div>
+        <div class="form-group">
+          <label>Grade Level <span class="required">*</span></label>
+          <select name="gradeLevel" required>
+            <option value="">Select...</option>
+            <option>Pre-K</option>
+            <option>Kindergarten</option>
+            <option>1st Grade</option>
+            <option>2nd Grade</option>
+            <option>3rd Grade</option>
+            <option>4th Grade</option>
+            <option>5th Grade</option>
+            <option>6th Grade</option>
+            <option>7th Grade</option>
+            <option>8th Grade</option>
+            <option>9th Grade</option>
+            <option>10th Grade</option>
+            <option>11th Grade</option>
+            <option>12th Grade</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Sport(s) of Interest <span class="required">*</span></label>
+        <select name="sports" required>
+          <option value="">Select...</option>
+          <option>Gymnastics</option>
+          <option>Track & Field</option>
+          <option>Basketball</option>
+          <option>Soccer</option>
+          <option>Multiple Sports</option>
+          <option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Section 3: Financial Need -->
+    <div class="form-section">
+      <h2>Financial Need</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Household Income Range <span class="required">*</span></label>
+          <select name="incomeRange" required>
+            <option value="">Select...</option>
+            <option>Under $25,000</option>
+            <option>$25,000 – $50,000</option>
+            <option>$50,000 – $75,000</option>
+            <option>$75,000 – $100,000</option>
+            <option>Over $100,000</option>
+            <option>Prefer not to say</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Number of Household Members <span class="required">*</span></label>
+          <input type="number" name="householdMembers" min="1" max="20" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Does the child currently participate in any sports programs? <span class="required">*</span></label>
+        <select name="currentlyInSports" required>
+          <option value="">Select...</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>If yes, what program and what is the current cost?</label>
+        <input type="text" name="currentProgram" placeholder="e.g. YMCA Basketball — $200/season" />
+      </div>
+      <div class="form-group">
+        <label>Has the child previously received a scholarship or financial aid for sports? <span class="required">*</span></label>
+        <select name="previousScholarship" required>
+          <option value="">Select...</option>
+          <option>Yes</option>
+          <option>No</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Section 4: Personal Statement -->
+    <div class="form-section">
+      <h2>Personal Statement</h2>
+      <div class="form-group">
+        <label>Why is this scholarship important to your child? <span class="required">*</span></label>
+        <textarea name="whyImportant" required placeholder="Please share why your child would benefit from this scholarship (200+ words suggested)..." style="min-height: 160px;"></textarea>
+      </div>
+      <div class="form-group">
+        <label>Describe your child's athletic experience and goals <span class="required">*</span></label>
+        <textarea name="athleticExperience" required placeholder="Share any sports experience, achievements, and what your child hopes to accomplish..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Is there anything else you'd like us to know?</label>
+        <textarea name="additionalInfo" placeholder="Optional — any other information that may support this application..."></textarea>
+      </div>
+    </div>
+
+    <!-- Section 5: Agreements -->
+    <div class="form-section">
+      <h2>Agreements</h2>
+      <div class="checkbox-group">
+        <input type="checkbox" id="agree1" name="certifyAccurate" required />
+        <label for="agree1">I certify that all information provided in this application is accurate and complete to the best of my knowledge. <span class="required">*</span></label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="agree2" name="agreeDocumentation" required />
+        <label for="agree2">I agree to provide additional documentation if requested by the Holden Foundation. <span class="required">*</span></label>
+      </div>
+      <div class="checkbox-group">
+        <input type="checkbox" id="agree3" name="understandNotGuaranteed" required />
+        <label for="agree3">I understand that submitting this application does not guarantee scholarship approval. <span class="required">*</span></label>
+      </div>
+    </div>
+
+    <!-- Section 6: Document Uploads -->
+    <div class="form-section">
+      <h2>Supporting Documents</h2>
+      <p style="color: var(--muted); font-size: .9rem; margin-bottom: 1.5rem; line-height: 1.6;">
+        Upload any supporting documents to strengthen your application. All uploads are optional but encouraged.
+      </p>
+      <div class="form-group">
+        <label>Report Card</label>
+        <input type="file" name="reportCard" accept=".pdf,.jpg,.jpeg,.png" />
+        <span class="file-note">PDF, JPG, or PNG — max 5 MB</span>
+      </div>
+      <div class="form-group">
+        <label>Coach Recommendation Letter</label>
+        <input type="file" name="coachLetter" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" />
+        <span class="file-note">PDF, JPG, PNG, DOC, or DOCX — max 5 MB</span>
+      </div>
+      <div class="form-group">
+        <label>Proof of Income</label>
+        <input type="file" name="proofOfIncome" accept=".pdf,.jpg,.jpeg,.png" />
+        <span class="file-note">PDF, JPG, or PNG — max 5 MB</span>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Submit Application</button>
+  </form>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Holden Foundation <span>for Kids Sports</span></div>
+  <div class="footer-links">
+    <a href="/#missions">Mission</a>
+    <a href="/#programs">Programs</a>
+    <a href="/#impact">Impact</a>
+    <a href="/#involved">Get Involved</a>
+    <a href="/#donate">Donate</a>
+    <a href="/#contact">Contact</a>
+  </div>
+  <p>&copy; 2026 Holden Foundation for Kids Sports. All rights reserved. | 501(c)(3) Nonprofit</p>
+</footer>
+
+<script>
+document.getElementById("scholarshipForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector(".btn-submit");
+  const formData = new FormData(form);
+
+  btn.textContent = "Submitting...";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch("/api/scholarship", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (res.ok) {
+      alert("Application submitted successfully! You will receive a confirmation email shortly. Thank you for applying.");
+      form.reset();
+    } else {
+      const data = await res.json();
+      alert(data.error || "Something went wrong. Please try again.");
+    }
+  } catch {
+    alert("Network error. Please check your connection and try again.");
+  }
+
+  btn.textContent = "Submit Application";
+  btn.disabled = false;
+});
+</script>
+
+</body>
+</html>
