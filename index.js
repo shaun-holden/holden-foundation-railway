@@ -72,7 +72,7 @@ app.post("/api/stripe-webhook", express.raw({ type: "application/json" }), async
                   <strong style="color: #f5c842;">Holden Foundation for Kids Sports</strong><br/>
                   Peachtree Corners, GA<br/>
                   info@holdenfoundation.org<br/>
-                  EIN: [Your EIN Here]
+                  EIN: 88-2344143
                 </p>
                 <p style="color: #94a3b8; font-size: 12px;">
                   Please retain this receipt for your tax records.
