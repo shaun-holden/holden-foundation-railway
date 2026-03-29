@@ -112,6 +112,21 @@ app.post("/api/stripe-webhook", express.raw({ type: "application/json" }), async
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+// TNT Families password-protected portal
+const TNT_ACCESS_CODE = process.env.TNT_ACCESS_CODE || "topnotch1313";
+
+app.post("/api/tnt-auth", (req, res) => {
+  const { code } = req.body;
+  if (code === TNT_ACCESS_CODE) {
+    return res.json({ success: true });
+  }
+  res.status(401).json({ error: "Invalid access code" });
+});
+
+app.get("/tnt-families", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "tnt-families.html"));
+});
+
 app.post("/api/contact", async (req, res) => {
   const { firstName, lastName, email, interest, message } = req.body;
 
